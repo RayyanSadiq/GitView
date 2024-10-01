@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 
 import Search from "../components/Search"
 import SortRepos from "../components/SortRepos"
@@ -12,25 +12,20 @@ const HomePage = () => {
     const [userProfile, setUserProfile] = useState(null)
     const [repos, setRepos] = useState([])
     const [loading, setLoading] = useState(false)
+    
 
     const [sortType, setSortType] = useState("recent")
 
     const getUserData = useCallback(async (username = "rayyansadiq") => {
         setLoading(true)
         try {
-            const userRes = await fetch(`https://api.github.com/users/${username}`, {
-                headers: {
-                    "authorization": `token ${import.meta.env.VITE_GITHUB_API_KEY}`
-                }
-            })
-            const userProfile = await userRes.json()
-            setUserProfile(userProfile)
+            const userRes = await fetch(`http://localhost:3000/api/user/profile/${username}`)
+            const { userProfile, repos } = await userRes.json()
 
-            const repoRes = await fetch(userProfile.repos_url)
-            const repos = await repoRes.json()
             repos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             setSortType("recent")
             setRepos(repos)
+            setUserProfile(userProfile)
 
 
             return { userProfile, repos }
@@ -80,7 +75,7 @@ const HomePage = () => {
     return (
         <div className="m-4">
             <Search onSearch={onSearch} />
-            {repos.length > 0 && <SortRepos onSort={onSort} sortType={sortType} />}
+            {repos.length > 0 &&  <SortRepos onSort={onSort} sortType={sortType} />}
             <div className="flex gap-4 flex-col lg:flex-row justify-center items-start">
 
                 {userProfile && !loading && <ProfileInfo userProfile={userProfile} />}

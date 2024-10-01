@@ -1,0 +1,2 @@
+1-in the exlore page if you spam click a language enough it will go blank and error
+2- in the homepage, whenever you type a user that is not there, it errors

@@ -9,6 +9,7 @@ const ExplorePage = () => {
   const [loading, setLoading] = useState(false)
   const [repos, setRepos] = useState([])
   const [language, setLanguage] = useState('')
+  
 
   const languages = ['javascript', 'typescript', 'c++', 'python', 'java']
 
@@ -17,12 +18,12 @@ const ExplorePage = () => {
     setRepos([])
     try {
 
-      const res = await fetch(`https://api.github.com/search/repositories?q=language:${language}&sort=stars&order=desc&per_page=10`, {
-        headers: {
-          "authorization": `token ${import.meta.env.VITE_GITHUB_API_KEY}`
-        }
-      })
+      const res = await fetch(`http://localhost:3000/api/explore/repos/${language}`)
+      
       const data = await res.json()
+      if (data.message) {
+        throw new Error("you have reached gitview api rate limit")
+      }
       setRepos(data.items)
       setLanguage(language)
 
@@ -59,7 +60,8 @@ const ExplorePage = () => {
           </h2>
 
         )}
-        {loading && repos.length > 0 ? <Spinner /> : <Repos repos={repos} pageType={'explore'} />}
+        {!loading && repos.length > 0 && <Repos repos={repos} alwaysFullWidth />}
+				{loading && <Spinner />}
 
       </div>
 
