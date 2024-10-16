@@ -63,7 +63,7 @@ const Repo = ({ repo }) => {
 				Released on {new Date(repo.created_at).toDateString()}
 			</time>
 			<p className='mb-4 text-base font-normal text-gray-500'>{repo.description ? repo.description.slice(0, 500) : "No Description Provided"}</p>
-			{PROGRAMMING_LANGUAGES[repo.language] ? (<img src={`/src/assets/${repo.language}.svg`} alt='Programming language icon' className='h-8' />) :
+			{PROGRAMMING_LANGUAGES[repo.language] ? (<img src={` /assets/${repo.language}.svg`} alt='Programming language icon' className='h-8' />) :
 				null}
 		</li>
 	);

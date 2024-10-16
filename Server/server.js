@@ -1,9 +1,13 @@
 const express = require('express');
-const app = express();
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 const passport = require('passport');
 const session = require('express-session');
+
+const PORT = process.env.PORT || 3000;
+const app = express();
+const _dirname = path.resolve();
 
 app.use(express.json());
 dotenv.config();
@@ -14,11 +18,6 @@ app.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: fals
 app.use(passport.initialize());
 app.use(passport.session());
 
-
-
-app.get('/', (req, res) => {
-    res.send('Hello World');
-});
 
 const github = require('./passport/github');
 
@@ -31,8 +30,12 @@ app.use('/api/users', users)
 app.use('/api/explore', explore)
 app.use('/api/auth', auth);
 
+app.use(express.static(path.join(_dirname, 'Client/dist')));
+app.get('*', (req, res) => {
+    res.sendFile(path.join(_dirname, 'Client', "dist",'index.html'));
+} );
 
-app.listen(3000, () => {
-    console.log('Server is running on port http://localhost:3000');
+app.listen(PORT, () => {
+    console.log(`Server is running on port http://localhost:${PORT}`);
     connectDB();
 });
