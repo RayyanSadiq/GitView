@@ -43,7 +43,7 @@ const ExplorePage = () => {
           {languages.map((lang) => (
             <img
               key={lang}
-              src={` /assets/${lang}.svg`}
+              src={`/${lang}.svg`}
               alt="Javascript Logo"
               className="h-11 sm:h-20  cursor-pointer"
               onClick={() => exploreRepos(lang)}
